@@ -3,7 +3,8 @@ import "solidity-coverage"
 
 import * as dotenv from "dotenv";
 dotenv.config();
-//import "./task/transfer"
+import "./task/transfer"
+import "./task/staking"
 
 
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
     rinkeby: {
       url: process.env.ALCHEMY_API_KEY,
       gas: "auto",
+      
       //gasPrice: 20000000000,
       accounts: {
         mnemonic: process.env.MNEMONIC,

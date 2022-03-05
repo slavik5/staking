@@ -4,20 +4,17 @@ pragma solidity ^0.8.0;
 //import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract token is AccessControl{
-//contract token{
-    
-    address public owner;
+contract Token is AccessControl {
+
     uint256 private totalBalance;
     mapping(address => mapping(address => uint256)) private allow;
     mapping(address => uint256) balance;
-    string private _name = "MyToken";
-    string private _symbol = "MYT";
+    string private _name = "SlavkaToken";
+    string private _symbol = "ST";
     uint8 private _decimals = 18;
     constructor() {
-        owner = msg.sender;
-       _setupRole(DEFAULT_ADMIN_ROLE, owner);
-        mint(owner, 10000 * 10 ** decimals());
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        mint(msg.sender, 10000 * 10 ** decimals());
     }
 
     function name() public view returns(string memory) {
@@ -90,8 +87,8 @@ contract token is AccessControl{
         return true;
     }
 
-    function mint(address account, uint256 amount) public onlyRole(DEFAULT_ADMIN_ROLE){
-        //require(msg.sender == owner, "msg.sender not owner");
+    function mint(address account, uint256 amount) public {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "msg.sender not owner");
         require(account != address(0), "account - zero address");
         totalBalance += amount;
         balance[account] += amount;
@@ -99,7 +96,7 @@ contract token is AccessControl{
     }
 
     function burn(address account, uint256 amount) public {
-        require(msg.sender == owner, "msg.sender not owner");
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "msg.sender not owner");
         require(account != address(0), "account - zero address");
         require(balance[account] >= amount, "not enough tokens on account");
         totalBalance -= amount;

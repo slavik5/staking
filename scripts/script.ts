@@ -3,17 +3,18 @@ import {ethers} from "hardhat";
 
 async function main() {
   
-  const token = await ethers.getContractFactory("token");
+  const Token = await ethers.getContractFactory("Token");
 
-  const hardhattoken = await token.deploy();
-  await hardhattoken.deployed();
-  const staking = await ethers.getContractFactory("staking");
+  const token = await Token.deploy();
+  await token.deployed();
+  
+  const Staking = await ethers.getContractFactory("Staking");
 
-  const hardhatstaking = await staking.deploy();
-  await hardhattoken.deployed();
+  const staking = await Staking.deploy(token.address);
+  await staking.deployed();
 
-  console.log("token deployed to:", hardhattoken.address);
-  console.log("staking deployed to:", hardhatstaking.address);
+  console.log("Token deployed to:", token.address);
+  console.log("Staking deployed to:", staking.address);
 }
 
 
